@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>嘿嘿 · 个人名片</title>
+
+  <!-- Font Awesome 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #4A90D9;
+      --primary-light: #5B8DEF;
+      --primary-soft: #EAF2FB;
+      --bg: #F9FAFB;
+      --card-bg: #FFFFFF;
+      --text-main: #2D3748;
+      --text-sub: #718096;
+      --border: #E8EDF3;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 16px rgba(74, 144, 217, 0.10);
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --radius-full: 50%;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.7;
+      font-size: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--primary-light);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .container {
+      flex: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    .profile-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      padding: 48px 32px 40px;
+      margin-top: 36px;
+      margin-bottom: 28px;
+      text-align: center;
+      animation: fadeInUp 0.6s ease both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: var(--radius-full);
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      box-shadow: 0 6px 20px rgba(74, 144, 217, 0.28);
+      user-select: none;
+      letter-spacing: 2px;
+    }
+
+    .nickname {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .tagline {
+      font-size: 1rem;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    .tagline .highlight {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .section {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease both;
+      animation-delay: 0.1s;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .section-text {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      line-height: 1.85;
+    }
+
+    .section-text p + p {
+      margin-top: 10px;
+    }
+
+    /* 入口区块（照妖镜、邮箱共用） */
+    .gate-section {
+      text-align: center;
+      padding: 40px 20px 36px;
+    }
+
+    .gate-section .section-title {
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .gate-section .section-title::before {
+      display: none;
+    }
+
+    .gate-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-full);
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 2rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 14px rgba(74, 144, 217, 0.15);
+      min-width: 80px;
+      min-height: 80px;
+    }
+
+    .gate-link:hover {
+      background: var(--primary);
+      color: #FFFFFF;
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 8px 24px rgba(74, 144, 217, 0.35);
+    }
+
+    .gate-link:active {
+      transform: scale(0.98);
+    }
+
+    .gate-hint {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      opacity: 0.8;
+    }
+
+    .social-wrap {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 1.2rem;
+      transition: background 0.25s, color 0.25s, transform 0.2s, box-shadow 0.25s;
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    .social-link:hover {
+      background: var(--primary);
+      color: #FFFFFF;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(74, 144, 217, 0.3);
+    }
+
+    .email-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: background 0.25s, color 0.25s, transform 0.2s, box-shadow 0.25s;
+      margin-top: 18px;
+      width: 100%;
+      max-width: 320px;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .email-btn:hover {
+      background: var(--primary);
+      color: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(74, 144, 217, 0.3);
+    }
+
+    .email-btn i {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 32px 20px 40px;
+      color: var(--text-sub);
+      font-size: 0.85rem;
+    }
+
+    .footer .heart {
+      color: var(--primary);
+      display: inline-block;
+      animation: heartbeat 1.6s ease infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.18); }
+    }
+
+    @media (max-width: 600px) {
+      .navbar-inner {
+        height: 50px;
+      }
+
+      .nav-links a {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+      }
+
+      .profile-card {
+        padding: 36px 20px 32px;
+        margin-top: 24px;
+        border-radius: 16px;
+      }
+
+      .avatar {
+        width: 96px;
+        height: 96px;
+        font-size: 2rem;
+      }
+
+      .nickname {
+        font-size: 1.6rem;
+      }
+
+      .tagline {
+        font-size: 0.92rem;
+      }
+
+      .section {
+        padding: 24px 18px;
+      }
+
+      .section-text {
+        font-size: 0.9rem;
+      }
+
+      .social-link {
+        width: 44px;
+        height: 44px;
+        font-size: 1.05rem;
+      }
+
+      .gate-link {
+        width: 70px;
+        height: 70px;
+        font-size: 1.7rem;
+      }
+
+      .email-btn {
+        font-size: 0.85rem;
+        padding: 10px 16px;
+      }
+    }
+
+    @media (max-width: 375px) {
+      .nav-links a {
+        padding: 4px 7px;
+        font-size: 0.78rem;
+      }
+
+      .nickname {
+        font-size: 1.4rem;
+      }
+
+      .avatar {
+        width: 84px;
+        height: 84px;
+        font-size: 1.7rem;
+      }
+
+      .social-wrap {
+        gap: 10px;
+      }
+
+      .gate-link {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <nav class="navbar-inner" aria-label="主导航">
+      <a href="#home" class="nav-logo">嘿嘿</a>
+      <div class="nav-links">
+        <a href="#home" class="active">首页</a>
+        <a href="#about">关于我</a>
+        <a href="#contact">联系我</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section class="profile-card" id="home">
+      <div class="avatar" aria-hidden="true">嘿</div>
+      <h1 class="nickname">嘿嘿</h1>
+      <p class="tagline">
+        嗨嗨，这里是有趣的 <span class="highlight">嘿嘿</span> 频道！一起玩耍吧 ~
+      </p>
+    </section>
+
+    <section class="section" id="about">
+      <h2 class="section-title">关于我</h2>
+      <div class="section-text">
+        <p>
+          我是一个热爱生活、乐于分享的人。平时喜欢捣鼓各种有趣的数字产品，
+          也喜欢把踩过的坑和学到的经验整理成笔记。相信「保持好奇」是持续成长
+          最好的方式，所以一直在学习的路上。
+        </p>
+        <p>
+          平时会写一些代码、做一些设计，偶尔也会做点视频。如果你也对这些
+          感兴趣，欢迎在各个平台找我聊天，一起交流碰撞出新的想法。
+        </p>
+      </div>
+    </section>
+
+    <!-- 照妖镜入口 -->
+    <section class="section gate-section" id="mirror">
+      <h2 class="section-title">照妖镜入口</h2>
+      <a href="https://ser1.myz.dpdns.org:3443/" class="gate-link" aria-label="打开照妖镜">
+        <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+      </a>
+      <p class="gate-hint">点击图标即可打开</p>
+    </section>
+
+    <!-- 邮箱入口（已修正链接为 https://mail.ocbot.top） -->
+    <section class="section gate-section" id="mail">
+      <h2 class="section-title">邮箱入口</h2>
+      <a href="https://mail.ocbot.top" class="gate-link" aria-label="打开邮箱">
+        <i class="fas fa-envelope" aria-hidden="true"></i>
+      </a>
+      <p class="gate-hint">点击图标即可打开</p>
+    </section>
+
+    <section class="section" id="contact">
+      <h2 class="section-title">联系我</h2>
+      <div class="social-wrap">
+        <a href="#" class="social-link" aria-label="访问我的 GitHub 主页" rel="noopener noreferrer">
+          <i class="fab fa-github" aria-hidden="true"></i>
+          <span class="sr-only">GitHub</span>
+        </a>
+        <a href="#" class="social-link" aria-label="访问我的微博主页" rel="noopener noreferrer">
+          <i class="fab fa-weibo" aria-hidden="true"></i>
+          <span class="sr-only">微博</span>
+        </a>
+        <a href="#" class="social-link" aria-label="访问我的 Bilibili 主页" rel="noopener noreferrer">
+          <i class="fab fa-bilibili" aria-hidden="true"></i>
+          <span class="sr-only">Bilibili</span>
+        </a>
+        <a href="#" class="social-link" aria-label="访问我的知乎主页" rel="noopener noreferrer">
+          <i class="fab fa-zhihu" aria-hidden="true"></i>
+          <span class="sr-only">知乎</span>
+        </a>
+      </div>
+      
+      <div style="text-align: center;">
+        <a href="mailto:tidoxo4723@pumpoly.com" class="email-btn" aria-label="发送邮件至 ClassIn 邮箱">
+          <i class="fas fa-envelope" aria-hidden="true"></i>
+          <span>tidoxo4723@pumpoly.com</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 嘿嘿 · Made with <span class="heart" aria-hidden="true">♥</span> in the digital world</p>
+  </footer>
+
+  <script>
+    (function () {
+      var navLinks = document.querySelectorAll('.nav-links a');
+      var sections = document.querySelectorAll('section[id]');
+
+      function updateActiveNav() {
+        var scrollPos = window.scrollY + 100;
+        var currentId = 'home';
+
+        sections.forEach(function (sec) {
+          if (sec.offsetTop <= scrollPos) {
+            currentId = sec.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(function (link) {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveNav, { passive: true });
+      updateActiveNav();
+
+      document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        anchor.addEventListener('click', function (e) {
+          var targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          var target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.style.animationPlayState = 'running';
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section').forEach(function (el) {
+          observer.observe(el);
+        });
+      }
+
+      // 两个入口的点击提示（控制台可见，方便调试）
+      document.querySelectorAll('.gate-link').forEach(function (link) {
+        link.addEventListener('click', function () {
+          console.log('正在打开入口：' + this.href);
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
